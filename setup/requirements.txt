@@ -1,0 +1,8 @@
+flask
+flask_cors
+flask_restful
+requests
+ipaddress
+datetime
+pytz
+urllib3
