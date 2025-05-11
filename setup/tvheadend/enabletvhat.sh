@@ -1,12 +1,24 @@
 #!/bin/bash
 
-CONFIG_FILE="/boot/config.txt"
+CONFIG="/boot/firmware/config.txt"
+BACKUP="$CONFIG.backup.$(date +%Y%m%d_%H%M%S)"
 
-# Backup the original config.txt
-sudo cp "$CONFIG_FILE" "${CONFIG_FILE}.bak"
+echo "Backing up config to $BACKUP"
+sudo cp "$CONFIG" "$BACKUP"
 
-# Ensure the required lines are present
-grep -qxF 'dtparam=i2c_arm=on' "$CONFIG_FILE" || echo 'dtparam=i2c_arm=on' >> "$CONFIG_FILE"
-grep -qxF 'dtoverlay=dvb-t-c-tvhat' "$CONFIG_FILE" || echo 'dtoverlay=dvb-t-c-tvhat' >> "$CONFIG_FILE"
-
-echo "✅ TV HAT config applied. Reboot required."
+if grep -q "^dtoverlay=rpi-tv" "$CONFIG"; then
+    echo "dtoverlay=rpi-tv is already present in config.txt"
+else
+    echo "Adding dtoverlay=rpi-tv to config.txt..."
+    if grep -q "^dtparam=i2c_arm=on" "$CONFIG"; then
+        # Insert after the dtparam=i2c_arm=on line
+        sudo sed -i "/^dtparam=i2c_arm=on/a dtoverlay=rpi-tv" "$CONFIG"
+    else
+        # Add to the end if i2c line is missing
+        echo "dtparam=i2c_arm=on not found — adding overlay at the end"
+        echo "" | sudo tee -a "$CONFIG" > /dev/null
+        echo "dtoverlay=rpi-tv" | sudo tee -a "$CONFIG" > /dev/null
+    fi
+    echo "Overlay added. Please reboot your Pi:"
+    echo "sudo reboot"
+fi
