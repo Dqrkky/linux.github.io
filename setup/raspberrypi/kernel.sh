@@ -14,6 +14,6 @@ sudo apt-get update
 
 # Step 4: Install Raspberry Pi kernel and firmware packages
 echo "Installing Raspberry Pi kernel and firmware..."
-sudo apt install -y raspberrypi-kernel
+sudo apt install -y raspberrypi-bootloader raspberrypi-kernel
 
 echo "Installation complete!"
