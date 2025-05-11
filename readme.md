@@ -22,10 +22,6 @@ curl https://dqrkky.github.io/linux/setup/api/systemctl.sh | bash
 curl https://dqrkky.github.io/linux/setup/api/requirements.sh | bash
 
 
-# Download and run the tvheadend/kernel.sh setup script using curl
-curl https://dqrkky.github.io/linux/setup/tvheadend/kernel.sh | bash
-
-
 # Download and run the tvheadend/enabletvhat.sh setup script using curl
 curl https://dqrkky.github.io/linux/setup/tvheadend/enabletvhat.sh | bash
 
