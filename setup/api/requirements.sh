@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Default URL for the requirements.txt
-DEFAULT_URL="https://dqrkky.github.io/linux/setup/requirements.txt"
+DEFAULT_URL="https://dqrkky.github.io/linux/setup/api/requirements.txt"
 
 # You can also specify a custom URL by passing it as an argument
 REQUIREMENTS_URL=${1:-$DEFAULT_URL}
