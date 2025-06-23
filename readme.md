@@ -48,6 +48,8 @@ curl https://dqrkky.github.io/linux/setup/tvheadend/enabletvhat.sh | bash
 ```bash
 curl https://dqrkky.github.io/linux/setup/websocket/systemctl.sh | bash
 ```
+
 # Download and run the websocket/requirements.sh setup script using curl
+```bash
 curl https://dqrkky.github.io/linux/setup/websocket/requirements.sh | bash
 ```
