@@ -44,6 +44,12 @@ curl https://dqrkky.github.io/linux/setup/tvheadend/enabletvhat.sh | bash
 ```
 
 
+# Download and run the ipaddress/getJson.sh setup script using curl
+```bash
+curl https://dqrkky.github.io/linux/setup/ipaddress/getJson.sh | bash
+```
+
+
 # Download and run the websocket/systemctl.sh setup script using curl
 ```bash
 curl https://dqrkky.github.io/linux/setup/websocket/systemctl.sh | bash
