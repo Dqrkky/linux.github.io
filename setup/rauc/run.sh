@@ -3,6 +3,7 @@
 # === CONFIGURATION ===
 LOGFILE="apt-cleanup.log"
 CURRENT_KERNEL=$(uname -r)
+HOSTNAME=$(uname -n)
 
 # Load webhook URL (secure option)
 if [[ -f .webhook_url ]]; then
@@ -15,7 +16,7 @@ fi
 send_webhook() {
     local message="$1"
     curl -s -X POST -H "Content-Type: application/json" \
-        -d "{\"content\": \"$message\"}" \
+        -d "{\"username\": \"$HOSTNAME\", \"content\": \"$message\"}" \
         "$WEBHOOK_URL" > /dev/null
 }
 
