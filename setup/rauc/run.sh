@@ -52,7 +52,7 @@ else
 fi
 
 # Kernel check and optional reboot
-NEWEST_KERNEL=$(dpkg --list | grep 'linux-image-[0-9]' | awk '{ print $2 }' |>
+NEWEST_KERNEL=$(dpkg --list | grep 'linux-image-[0-9]' | awk '{ print $2 }' | sort -V | tail -n1 | sed 's/linux-image-//')
 log "🆕 Installed kernel: $NEWEST_KERNEL"
 
 if [ "$CURRENT_KERNEL" != "$NEWEST_KERNEL" ]; then
