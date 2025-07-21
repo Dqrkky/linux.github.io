@@ -16,7 +16,7 @@ fi
 send_webhook() {
     local message="$1"
     curl -s -X POST -H "Content-Type: application/json" \
-        -d "{\"username\": \"$HOSTNAME\", \"content\": \"$message\"}" \
+        -d "{\"username\": \"[RAUC]: $HOSTNAME\", \"content\": \"$message\"}" \
         "$WEBHOOK_URL" > /dev/null
 }
 
