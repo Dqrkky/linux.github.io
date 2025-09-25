@@ -14,45 +14,45 @@ fi
 
 # === FUNCTIONS ===
 send_webhook() {
-    local message="$1"
+    local message
+    message=$(jq -Rs . <<< "$1")   # escape safely
     curl -s -X POST -H "Content-Type: application/json" \
-        -d "{\"username\": \"[RAUC]: $HOSTNAME\", \"content\": \"$message\"}" \
+        -d "{\"username\": \"[RAUC]: $HOSTNAME\", \"content\": $message}" \
         "$WEBHOOK_URL" > /dev/null
 }
 
 log() {
     echo "$1" | tee -a "$LOGFILE"
-    send_webhook "$1"
 }
 
 # === START SCRIPT ===
-echo "" > "$LOGFILE"
+: > "$LOGFILE"
 log "🚀 Starting APT full cleanup"
 log "🔍 Running kernel: $CURRENT_KERNEL"
 
 log "🔄 Updating package lists..."
-sudo apt update | log
+sudo apt update | tee -a "$LOGFILE"
 
 log "⬆️ Performing full-upgrade..."
-sudo apt full-upgrade -y | log
+sudo apt full-upgrade -y | tee -a "$LOGFILE"
 
 log "🧹 Autoremoving unused packages..."
-sudo apt autoremove -y | log
+sudo apt autoremove -y | tee -a "$LOGFILE"
 
 log "🧽 Autocleaning package cache..."
-sudo apt autoclean | log
+sudo apt autoclean | tee -a "$LOGFILE"
 
 log "🧼 Purging orphaned config files..."
 orphans=$(dpkg -l | awk '/^rc/ { print $2 }')
 if [ -n "$orphans" ]; then
-    echo "$orphans" | xargs sudo apt purge -y | log
+    echo "$orphans" | xargs sudo apt purge -y | tee -a "$LOGFILE"
     log "✅ Orphaned configs purged."
 else
     log "✅ No orphaned config files found."
 fi
 
 # Kernel check and optional reboot
-NEWEST_KERNEL=$(dpkg --list | grep 'linux-image-[0-9]' | awk '{ print $2 }' | sort -V | tail -n1 | sed 's/linux-image-//')
+NEWEST_KERNEL=$(dpkg --list | awk '/^ii\s+linux-image-[0-9]/ {print $2}' | sort -V | tail -n1 | sed 's/linux-image-//')
 log "🆕 Installed kernel: $NEWEST_KERNEL"
 
 if [ "$CURRENT_KERNEL" != "$NEWEST_KERNEL" ]; then
@@ -63,3 +63,4 @@ else
 fi
 
 log "🎉 APT cleanup finished successfully."
+send_webhook "$(cat "$LOGFILE")"
