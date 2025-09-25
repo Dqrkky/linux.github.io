@@ -28,7 +28,7 @@ log() {
 # === START SCRIPT ===
 : > "$LOGFILE"
 log "🚀 Starting APT full cleanup"
-log "🔍 Running kernel: $CURRENT_KERNEL\nCheck: https://www.ubuntuupdates.org/package/core/noble/main/updates/linux-modules-$NEWEST_KERNEL"
+log "🔍 Running kernel: $CURRENT_KERNEL\nCheck: https://www.ubuntuupdates.org/package/core/noble/main/updates/linux-modules-$CURRENT_KERNEL"
 
 log "🔄 Updating package lists..."
 sudo apt update | tee -a "$LOGFILE"
