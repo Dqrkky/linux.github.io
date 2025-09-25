@@ -28,7 +28,7 @@ log() {
 # === START SCRIPT ===
 : > "$LOGFILE"
 log "🚀 Starting APT full cleanup"
-log "🔍 Running kernel: $CURRENT_KERNEL"
+log "🔍 Running kernel: $CURRENT_KERNEL\nCheck: https://www.ubuntuupdates.org/package/core/noble/main/updates/linux-modules-$NEWEST_KERNEL"
 
 log "🔄 Updating package lists..."
 sudo apt update | tee -a "$LOGFILE"
@@ -53,7 +53,7 @@ fi
 
 # Kernel check and optional reboot
 NEWEST_KERNEL=$(dpkg --list | awk '/^ii\s+linux-image-[0-9]/ {print $2}' | sort -V | tail -n1 | sed 's/linux-image-//')
-log "🆕 Installed kernel: $NEWEST_KERNEL"
+log "🆕 Installed kernel: $NEWEST_KERNEL\nCheck: https://www.ubuntuupdates.org/package/core/noble/main/updates/linux-modules-$NEWEST_KERNEL"
 
 if [ "$CURRENT_KERNEL" != "$NEWEST_KERNEL" ]; then
     log "🔁 Kernel updated — scheduling reboot in 1 minute..."
