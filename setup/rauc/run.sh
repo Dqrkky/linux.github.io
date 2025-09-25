@@ -18,7 +18,7 @@ send_webhook() {
     message=$(jq -Rs . <<< "$1")   # escape safely
     curl -s -X POST -H "Content-Type: application/json" \
         -d "{\"username\": \"[RAUC]: $HOSTNAME\", \"content\": $message}" \
-        "$WEBHOOK_URL" > /dev/null
+        "$WEBHOOK_URL"
 }
 
 log() {
@@ -30,7 +30,7 @@ log() {
 log "🚀 Starting APT full cleanup"
 log "🔍 Running kernel: $CURRENT_KERNEL"
 log "https://www.ubuntuupdates.org/package/core/noble/main/updates/linux-modules-$CURRENT_KERNEL"
-log "https://launchpad.net/ubuntu/+source/linux/${CURRENT_KERNEL%-generic}"
+log "https://www.ubuntuupdates.org/bugs?package_name=linux-modules-$CURRENT_KERNEL"
 
 log "🔄 Updating package lists..."
 sudo apt update | tee -a "$LOGFILE"
@@ -56,8 +56,8 @@ fi
 # Kernel check and optional reboot
 NEWEST_KERNEL=$(dpkg --list | awk '/^ii\s+linux-image-[0-9]/ {print $2}' | sort -V | tail -n1 | sed 's/linux-image-//')
 log "🆕 Installed kernel: $NEWEST_KERNEL"
-log "https://www.ubuntuupdates.org/package/core/noble/main/updates/linux-modules-$CURRENT_KERNEL"
-log "https://launchpad.net/ubuntu/+source/linux/${CURRENT_KERNEL%-generic}"
+log "https://www.ubuntuupdates.org/package/core/noble/main/updates/linux-modules-$NEWEST_KERNEL"
+log "https://www.ubuntuupdates.org/bugs?package_name=linux-modules-$NEWEST_KERNEL"
 
 if [ "$CURRENT_KERNEL" != "$NEWEST_KERNEL" ]; then
     log "🔁 Kernel updated — scheduling reboot in 1 minute..."
