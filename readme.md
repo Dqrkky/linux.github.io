@@ -32,6 +32,7 @@ curl https://dqrkky.github.io/linux/install/tvheadend.sh | bash
 ```bash
 curl https://dqrkky.github.io/linux/setup/api/systemctl.sh | bash
 ```
+
 # Download and run the api/requirements.sh setup script using curl
 ```bash
 curl https://dqrkky.github.io/linux/setup/api/requirements.sh | bash
@@ -41,6 +42,18 @@ curl https://dqrkky.github.io/linux/setup/api/requirements.sh | bash
 # Download and run the tvheadend/enabletvhat.sh setup script using curl
 ```bash
 curl https://dqrkky.github.io/linux/setup/tvheadend/enabletvhat.sh | bash
+```
+
+
+# Download and run the radio/install.sh setup script using curl
+```bash
+curl https://dqrkky.github.io/linux/setup/radio/install.sh | bash
+```
+
+
+# Download and run the rauc/run.sh setup script using curl
+```bash
+curl https://dqrkky.github.io/linux/setup/rauc/run.sh | bash
 ```
 
 
