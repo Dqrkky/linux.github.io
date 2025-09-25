@@ -22,7 +22,7 @@ send_webhook() {
 }
 
 log() {
-    echo "$1" | tee -a "$LOGFILE"
+    printf "%b\n" "$1" | tee -a "$LOGFILE"
 }
 
 # === START SCRIPT ===
