@@ -5,7 +5,7 @@ import time
 import shutil
 import sys
 
-URL = "https://example.com"   # 👈 change this to your website
+URL = "https://dqrkky.pages.dev"   # 👈 change this to your website
 DISPLAY = ":0"
 
 def run(cmd):
