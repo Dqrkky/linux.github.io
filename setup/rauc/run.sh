@@ -54,7 +54,7 @@ else
 fi
 
 # Kernel check and optional reboot
-NEWEST_KERNEL=$(dpkg --list | awk '/^ii\s+linux-image-[0-9]/ {print $2}' | sort -V | tail -n1 | sed 's/linux-image-//')
+NEWEST_KERNEL=$(dpkg --list 'linux-image-*' | awk '/^ii/ {print $2}' | grep -E '^linux-image-[0-9]' | sed 's/linux-image-//' | sort -V | tail -n1)
 log "🆕 Installed kernel: $NEWEST_KERNEL"
 log "https://www.ubuntuupdates.org/package/core/noble/main/updates/linux-modules-$NEWEST_KERNEL"
 log "https://www.ubuntuupdates.org/bugs?package_name=linux-modules-$NEWEST_KERNEL"
