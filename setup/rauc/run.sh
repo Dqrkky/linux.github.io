@@ -5,6 +5,12 @@ LOGFILE="apt-cleanup.log"
 CURRENT_KERNEL=$(uname -r)
 HOSTNAME=$(uname -n)
 
+if [[ $EUID -eq 0 ]]; then
+    SUDO=""
+else
+    SUDO="sudo"
+fi
+
 # Load webhook URL (secure option)
 if [[ -f .webhook_url ]]; then
     WEBHOOK_URL=$(< .webhook_url)
@@ -33,21 +39,21 @@ log "https://www.ubuntuupdates.org/package/core/noble/main/updates/linux-modules
 log "https://www.ubuntuupdates.org/bugs?package_name=linux-modules-$CURRENT_KERNEL"
 
 log "🔄 Updating package lists..."
-sudo apt update | tee -a "$LOGFILE"
+$SUDO apt update | tee -a "$LOGFILE"
 
 log "⬆️ Performing full-upgrade..."
-sudo apt full-upgrade -y | tee -a "$LOGFILE"
+$SUDO apt full-upgrade -y | tee -a "$LOGFILE"
 
 log "🧹 Autoremoving unused packages..."
-sudo apt autoremove -y | tee -a "$LOGFILE"
+$SUDO apt autoremove -y | tee -a "$LOGFILE"
 
 log "🧽 Autocleaning package cache..."
-sudo apt autoclean | tee -a "$LOGFILE"
+$SUDO apt autoclean | tee -a "$LOGFILE"
 
 log "🧼 Purging orphaned config files..."
 orphans=$(dpkg -l | awk '/^rc/ { print $2 }')
 if [ -n "$orphans" ]; then
-    echo "$orphans" | xargs sudo apt purge -y | tee -a "$LOGFILE"
+    echo "$orphans" | xargs $SUDO apt purge -y | tee -a "$LOGFILE"
     log "✅ Orphaned configs purged."
 else
     log "✅ No orphaned config files found."
@@ -61,7 +67,7 @@ log "https://www.ubuntuupdates.org/bugs?package_name=linux-modules-$NEWEST_KERNE
 
 if [ "$CURRENT_KERNEL" != "$NEWEST_KERNEL" ]; then
     log "🔁 Kernel updated — scheduling reboot in 1 minute..."
-    sudo shutdown -r +1 "Rebooting after kernel upgrade"
+    $SUDO shutdown -r +1 "Rebooting after kernel upgrade"
 else
     log "✅ Kernel not changed — no reboot needed."
 fi
