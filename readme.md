@@ -39,9 +39,9 @@ curl https://dqrkky.github.io/linux/setup/api/requirements.sh | bash
 ```
 
 
-# Download and run the tvheadend/enabletvhat.sh setup script using curl
+# Download and run the ipaddress/getJson.sh setup script using curl
 ```bash
-curl https://dqrkky.github.io/linux/setup/tvheadend/enabletvhat.sh | bash
+curl https://dqrkky.github.io/linux/setup/ipaddress/getJson.sh | bash
 ```
 
 
@@ -57,9 +57,9 @@ curl https://dqrkky.github.io/linux/setup/rauc/run.sh | bash
 ```
 
 
-# Download and run the ipaddress/getJson.sh setup script using curl
+# Download and run the tvheadend/enabletvhat.sh setup script using curl
 ```bash
-curl https://dqrkky.github.io/linux/setup/ipaddress/getJson.sh | bash
+curl https://dqrkky.github.io/linux/setup/tvheadend/enabletvhat.sh | bash
 ```
 
 
