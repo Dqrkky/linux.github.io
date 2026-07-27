@@ -5,25 +5,38 @@ LOGFILE="apt-cleanup.log"
 CURRENT_KERNEL=$(uname -r)
 HOSTNAME=$(uname -n)
 
+# === Dynamic sudo detection ===
 if [[ $EUID -eq 0 ]]; then
     SUDO=""
-else
+    echo "[INFO] Running as root."
+elif command -v sudo >/dev/null 2>&1; then
     SUDO="sudo"
+    echo "[INFO] sudo detected. Using sudo."
+else
+    SUDO=""
+    echo "[WARNING] sudo not found. Running without sudo."
 fi
 
 # Load webhook URL (secure option)
 if [[ -f .webhook_url ]]; then
     WEBHOOK_URL=$(< .webhook_url)
+    echo "[INFO] Webhook loaded."
 else
-    WEBHOOK_URL="https://example.com"
+    WEBHOOK_URL=""
+    echo "[WARNING] No webhook configured."
 fi
 
 # === FUNCTIONS ===
 send_webhook() {
+    if [[ -z "$WEBHOOK_URL" ]]; then
+        echo "[WARNING] Webhook disabled."
+        return
+    fi
     local message
-    message=$(jq -Rs . <<< "$1")   # escape safely
-    curl -s -X POST -H "Content-Type: application/json" \
-        -d "{\"username\": \"[RAUC]: $HOSTNAME\", \"content\": $message}" \
+    message=$(jq -Rs . <<< "$1")
+    curl -s -X POST \
+        -H "Content-Type: application/json" \
+        -d "{\"username\":\"[RAUC]: $HOSTNAME\",\"content\":$message}" \
         "$WEBHOOK_URL"
 }
 
